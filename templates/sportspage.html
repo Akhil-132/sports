@@ -1,0 +1,675 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Meet</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'assets/css/style.css' %}"/>
+    <!-- Swiper.js CSS -->
+    <!-- Swiper.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <!-- Add Bootstrap Icons CDN link in the <head> section -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+<style>
+    /* Remove the default number input arrows */
+ #timeInput1::-webkit-outer-spin-button,
+ #timeInput1::-webkit-inner-spin-button {
+     -webkit-appearance: none;
+     margin: 0;
+ }
+ #timeInput1 {
+     -moz-appearance: textfield; /* Firefox */
+     text-align: center;
+     font-size: 1.2rem;
+ }
+ 
+ /* Style the buttons as circles */
+ .btn-circle {
+     width: 40px;
+     height: 40px;
+     border-radius: 60%;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-size: 1.5rem;
+     font-weight: bold;
+     border: none;
+     color: black;
+ }
+ .input-group .btn-circle {
+    border-top-right-radius: 50% !important;
+    border-bottom-right-radius: 50% !important;
+    border-top-left-radius: 50% !important;
+    border-bottom-left-radius: 50% !important;
+}
+ .btn-plus {
+     background-color: #cfcfd4; /* Green */
+ }
+ 
+ .btn-minus {
+     background-color: #cbcbce; /* Red */
+ }
+ 
+ .btn-plus:hover {
+     background-color: #302188;
+     color:white;
+ }
+ 
+ .btn-minus:hover {
+     background-color: #232ec8;
+     color:white;
+ }
+ 
+ /* Circular buttons with hover effects */
+ .duration-btn {
+     width: 40px;
+     height: 40px;
+     font-size: 1.2rem;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     transition: all 0.3s ease;
+     border: 2px solid transparent;
+ }
+ 
+ /* Hover effect */
+ .duration-btn:hover {
+     background-color: #0056b3 !important;
+     color: white;
+     transform: scale(1.1);
+ }
+ 
+ /* Input box for duration */
+ .duration-box {
+    width: 158px;
+    height: 40px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border: 2px solid #007bff;
+    border-radius: -2px;
+}
+
+    .star-rating {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-end;
+        font-size: 2rem;
+    }
+    
+    .star-rating input {
+        display: none;
+    }
+    
+    .star-rating label {
+        cursor: pointer;
+        color: #ddd;
+        transition: color 0.3s;
+    }
+    
+    .star-rating label:before {
+        content: '★';
+        padding: 0 5px;
+    }
+    
+    .star-rating input:checked ~ label,
+    .star-rating label:hover,
+    .star-rating label:hover ~ label {
+        color: #f5b301;
+    }
+
+    .star-rating-display {
+        color: gold;
+        font-size: 1.2em;
+        letter-spacing: 2px;
+    }
+    
+  
+</style>
+    
+
+</head>
+<body>
+
+    <!-- Hero Section with Search -->
+     <!-- Breadcrumb Section -->
+     <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'SportMeetApp:home' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'SportMeetApp:allvenue-list' %}">Venues</a></li>
+            {% comment %} <li class="breadcrumb-item active" aria-current="page" title="Melbourne Sports Complex">
+                Melbourne Sports Complex
+            </li> {% endcomment %}
+        </ol>
+    </nav>
+
+  <!-- Venue and Share Section -->
+<div class="container mt-5">
+    <div class="row">
+        <!-- Left Side: Venue Information -->
+        <div class="col-md-6">
+            <h2>{{venue.name}}</h2>
+            <p>Average Rating: 
+                <span class="star-rating-display">
+                {% for i in "12345"|make_list %}
+                    {% if forloop.counter <= venue.average_rating|floatformat:0|add:"0" %}
+                        ★
+                    {% else %}
+                        ☆
+                    {% endif %}
+                {% endfor %}
+            </span>
+            </p>
+            {% comment %} <p class="text-truncate">Prince Valley Grand Stadium with world-class facilities and multiple indoor and outdoor arenas...</p> {% endcomment %}
+        </div>
+
+        <!-- Right Side: Share and Book Now -->
+        <div class="col-md-6 d-flex justify-content-end align-items-center gap-3">
+            <div class="share-icon-dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle share-btn" type="button" id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-share"></i> Share
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="shareDropdown">
+                    <li><a class="dropdown-item d-flex align-items-center" href="#"><i class="bi bi-facebook me-2 text-primary"></i> Facebook</a></li>
+                    <li><a class="dropdown-item d-flex align-items-center" href="#"><i class="bi bi-twitter me-2 text-info"></i> Twitter</a></li>
+                    <li><a class="dropdown-item d-flex align-items-center" href="#"><i class="bi bi-instagram me-2 text-danger"></i> Instagram</a></li>
+                    <li><a class="dropdown-item d-flex align-items-center" href="#"><i class="bi bi-linkedin me-2 text-primary"></i> LinkedIn</a></li>
+                </ul>
+            </div>
+            <a href="{% url 'SportMeetApp:booking-view' venue_id=venue.id %}" class="btn btn-primary">Book Now</a>
+
+        </div>
+    </div>
+
+</div>
+
+  
+
+<!-- Booking Popup -->
+<div id="bookNowPopup" class="modal fade" tabindex="-1" aria-labelledby="bookNowModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md"> <!-- Large modal for better layout -->
+        <div class="modal-content shadow-md rounded-4">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="bookNowModalLabel">{{ venue.name }}</h5>
+                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                
+
+                <!-- Booking Form -->
+                {% comment %} <form id="bookingForm" method="POST" action="{% url 'SportMeetApp:book_venue' %}"> {% endcomment %}
+                    {% csrf_token %}
+                    <div class="row g-3 align-items-center p-4">
+                        <!-- Name (Auto-filled) -->
+                        <div class="col-md-4 text-start">
+                            <label for="nameInput" class="form-label fw-bold">Name:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control border-2 border-primary" id="nameInput" name="username" value="{{ user.username }}" readonly>
+                        </div>
+
+                        <!-- Sport -->
+                        <div class="col-md-4 text-start">
+                            <label for="sportInput" class="form-label fw-bold">Sport:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <select class="form-select border-2 border-primary" id="sportInput" name="sport" required onchange="updateCourts()">
+                                <option value="" disabled selected>Select Sport</option>
+                                {% for sport in sport_types %}
+                                    <option value="{{ sport.id }}">{{ sport.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Date -->
+                        <div class="col-md-4 text-start">
+                            <label for="dateInput" class="form-label fw-bold">Date:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="date" class="form-control border-2 border-primary" id="dateInput" name="date" required>
+                        </div>
+
+                        <!-- Time Slot Selection -->
+                        <div class="col-md-4 text-start">
+                            <label for="timeInput" class="form-label fw-bold">Time Slot:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <select class="form-select border-2 border-primary" id="timeInput" name="start_time" required>
+                                <option value="" disabled selected>Select Time</option>
+                                {% for slot in venue_time_slots %}
+                                <option value="{{ slot.id }}">{{ slot.time_slot|time:'H:i' }}</option>
+                                {% endfor %}
+                            </select>
+                        </div> 
+
+                        {% comment %} <label for="startTimeInput">Start Time</label>
+                        <input type="time" id="startTimeInput" name="start_time" required />  {% endcomment %}
+
+
+
+                        <!-- Duration -->
+                        <div class="col-md-4 text-start">
+                            <label for="durationInput" class="form-label fw-bold">Duration (Hours):</label>
+                        </div>
+                        <div class="col-md-8 d-flex align-items-center">
+                            <button type="button" class="btn btn-primary rounded-circle fw-bold duration-btn" onclick="changeDuration(-1)">−</button>
+                            <input type="text" id="durationInput" name="duration" value="1" class="form-control text-center mx-3 duration-box" readonly>
+                            <button type="button" class="btn btn-primary rounded-circle fw-bold duration-btn" onclick="changeDuration(1)">+</button>
+                        </div>
+
+                        <!-- Court Selection -->
+                        <div class="col-md-4 text-start">
+                            <label for="courtInput" class="form-label fw-bold">Court:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <select class="form-select border-2 border-primary" id="courtInput" name="court" required>
+                                <option value="" disabled selected>Select Court</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Venue (Hidden Field) -->
+                    <input type="hidden" name="venue" value="{{ venue.id }}">
+
+                    <!-- Price Section -->
+                    {% comment %} <div class="mt-2 text-center">
+                        <span class="fs-5 fw-bold text-dark">Price per Hour: <span class="text-success">$50</span></span>
+                    </div> {% endcomment %}
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-primary w-100 py-2 fs-5 rounded-3 shadow-lg transition-all hover:bg-success hover:shadow-xl">
+                       BOOK & Pay Now
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="row g-4">
+        <!-- Left Side: Large Image -->
+        <div class="col-md-8">
+            <div class="image-container h-100">
+                <img id="venueImage" src="{{venue.image.url}}" alt="Venue Image" class="img-fluid w-100 h-100 object-fit-cover">
+            </div>
+        </div>
+
+        <!-- Right Side: Two Smaller Images -->
+        <div class="col-md-4 d-flex flex-column justify-content-between">
+            {% if venue_images %}
+                {% for image in venue_images|slice:":2" %}  {# Show only 2 images #}
+                    <div class="mb-3">
+                        <img src="{{ image.image.url }}" alt="Venue Image" class="img-fluid w-100 object-fit-cover">
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>No images available</p>
+            {% endif %}
+        </div>
+        
+    {% comment %} <div class="container mt-3">
+        <h2 id="venueName">About Venue</h2>
+        <p id="venueDescription">Venue description will appear here.</p>
+    </div>
+</div> {% endcomment %}
+
+    <div class="container mt-3">
+        <h2>About {{venue.name}}</h2>
+        <p>{{venue.description}}</p>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Sports</h2>
+    <div class="row g-4">
+        {% if venue_courts %}
+        {% for venue in venue_courts %}
+        <div class="col-md-2 d-flex flex-column align-items-center">
+            <i class="bi bi-basketball mb-3"></i>
+            <img src="{% get_media_prefix %}{{ venue.sport__image }}" alt="{{ venue.sport__name }}" class="img-fluid rounded-3">
+            <div class="text">{{venue.sport__name}}</div>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+    </div>
+</div>
+
+<div class="container mt-3">
+    <div class="row">
+        <h2>Timings</h2>
+        <h4>{{ venue.start_time|time:"gA"|lower }} - {{ venue.end_time|time:"gA"|lower }}</h4>
+    </div>
+</div>
+
+<div class="container mt-3 mb-5">
+    <div class="row">
+        <h2>Location</h2>
+
+        <p>
+            {{ venue.address }} 
+            <p>Show directions
+            <a href="{{ venue.google_maps_link }}" target="_blank">
+                <i class="fas fa-directions"></i>
+            </a></p>
+        </p>
+       
+    </div>
+</div>
+
+<h3>Reviews:</h3>
+<ul>
+    {% for review in venue.reviews.all %}
+<li><strong>{{ review.user.username }}</strong>: {{ review.rating }} ⭐ - {{ review.comment }}</li>
+    {% endfor %}
+</ul>
+
+<h3>Submit Your Review</h3>
+<form method="POST" action="{% url 'SportMeetApp:submit_review' venue.id %}" class="rating-form">
+    {% csrf_token %}
+
+    <div class="star-rating">
+        <input type="radio" id="star5" name="rating" value="5" required>
+        <label for="star5" title="5 stars"></label>
+
+        <input type="radio" id="star4" name="rating" value="4">
+        <label for="star4" title="4 stars"></label>
+
+        <input type="radio" id="star3" name="rating" value="3">
+        <label for="star3" title="3 stars"></label>
+
+        <input type="radio" id="star2" name="rating" value="2">
+        <label for="star2" title="2 stars"></label>
+
+        <input type="radio" id="star1" name="rating" value="1">
+        <label for="star1" title="1 star"></label>
+    </div>
+
+    <div class="form-group">
+        <label for="review">Comment:</label>
+        <textarea name="review" id="review" class="form-control" rows="4"></textarea>
+    </div>
+<br>
+    <button type="submit" class="btn btn-primary">Submit Review</button>
+</form>
+<br>
+
+<h3>Reviews</h3>
+
+<ul>
+    {% for review in reviews %}
+        <li>
+            <strong>{{ review.user.username }}</strong> - 
+            <span class="star-rating-display">
+                {% for i in "12345" %}
+                    {% if forloop.counter <= review.rating %}
+                        ★
+                    {% else %}
+                        ☆
+                    {% endif %}
+                {% endfor %}
+            </span>
+            <p>{{ review.review }}</p>
+            <small>{{ review.created_at|date:"F j, Y, g:i a" }}</small>
+        </li>
+    {% empty %}
+        <li>No reviews yet.</li>
+    {% endfor %}
+</ul>
+        
+
+            
+        
+
+
+
+
+    
+
+    
+   
+   
+ <!-- Footer Section -->
+<div class="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Contact Us Section -->
+            <div class="col-md-3">
+                <h5>Contact Us</h5>
+                <div class="footer-links">
+                    <a href="#">Email Us</a>
+                    <a href="#">FAQ</a>
+                    <a href="#">Support</a>
+                    <a href="#">Terms & Conditions</a>
+                </div>
+            </div>
+
+            <!-- Quick Links Section -->
+            <div class="col-md-3">
+                <h5>Quick Links</h5>
+                <div class="footer-links">
+                    <a href="#">Venues</a>
+                    <a href="#">Sports</a>
+                    <!-- <a href="#">Privacy Policy</a> -->
+                </div>
+            </div>
+
+              <!-- Follow Us Section -->
+              <div class="col-md-3">
+                <h5>Follow Us</h5>
+                <div class="footer-icons">
+                    <a href="#" class="facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="linkedin"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <!-- Newsletter Section -->
+            <div class="col-md-3">
+                <h5>Newsletter</h5>
+                <div class="newsletter">
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Enter your email" aria-label="Email Address">
+                        <button class="btn btn-primary">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="border-white">
+        <div class="row">
+            <div class="col-12 text-center">
+                <p>&copy; 2025 Sports Meet. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    <!-- Bootstrap JS -->
+
+<!-- Bootstrap JS and FontAwesome for Icons -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> -->
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+      // Modal toggle for Book Now button
+      document.getElementById('bookNowBtn').addEventListener('click', function() {
+          var myModal = new bootstrap.Modal(document.getElementById('bookNowPopup'));
+          myModal.show();
+      });
+
+      // Prevent form submission for testing
+      document.getElementById('bookingForm').addEventListener('submit', function(e) {
+          e.preventDefault();
+          alert("Booking submitted!");
+      });
+  </script>
+  <script>
+    function updateCourts() {
+        let sportId = document.getElementById("sportInput").value;
+        let venueId = document.querySelector("input[name='venue']").value; // Fetch venue ID from hidden input
+        let courtDropdown = document.getElementById("courtInput");
+    
+        if (!sportId || !venueId) return;
+    
+        // Clear previous options
+        courtDropdown.innerHTML = '<option value="" disabled selected>Loading...</option>';
+    
+        fetch(`/api/courts/${venueId}/${sportId}/`)
+            .then(response => response.json())
+            .then(data => {
+                courtDropdown.innerHTML = '<option value="" disabled selected>Select Court</option>';
+                data.forEach(court => {
+                    let option = document.createElement("option");
+                    option.value = court.id;
+                    option.textContent = `${court.court_no} (₹${court.price})`;
+                    courtDropdown.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching courts:", error);
+            });
+    }
+    </script>
+    <script>
+        function changeDuration(value) {
+            let durationInput = document.getElementById("durationInput");
+            let currentValue = parseInt(durationInput.value);
+        
+            // Ensure value stays between 1 and 10
+            let newValue = currentValue + value;
+            if (newValue >= 1 && newValue <= 10) {
+                durationInput.value = newValue;
+            }
+        }
+        </script>
+
+        <script>
+            const venueId = "{{ venue.id }}";  // Venue ID from the template
+            const dateInput = document.getElementById('dateInput');
+        
+            // Fetch available dates from the API
+            fetch(`/api/available-dates/?venue_id=${venueId}`)
+                .then(response => response.json())
+                .then(data => {
+                    const availableDates = data.available_dates;
+        
+                    // Set min and max attributes for the date input
+                    if (availableDates.length > 0) {
+                        dateInput.min = availableDates[0];
+                        dateInput.max = availableDates[availableDates.length - 1];
+                    }
+        
+                    // Add event listener to validate selected date
+                    dateInput.addEventListener('change', function () {
+                        const selectedDate = dateInput.value;
+        
+                        if (!availableDates.includes(selectedDate)) {
+                            alert("Selected date is not available. Please choose another date.");
+                            dateInput.value = '';  // Clear the input
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching available dates:", error);
+                });
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const dateInput = document.getElementById("dateInput");
+                const timeInput = document.getElementById("timeInput");
+                const courtInput = document.getElementById("courtInput");
+                const durationInput = document.getElementById("durationInput");
+                const bookButton = document.querySelector("button[type='submit']");
+                const messageDiv = document.createElement("div");
+                messageDiv.classList.add("text-danger", "fw-bold", "mt-2");
+            
+                // Function to check availability
+                function checkAvailability() {
+                    const date = dateInput.value;
+                    const timeSlotId = timeInput.value; // Get the selected time slot ID
+                    const court = courtInput.value;
+                    const duration = durationInput.value || 1; // Default to 1 hour if missing
+            
+                    if (!date || !timeSlotId || !court) return;
+            
+                    // Fetch the time slot value (e.g., "14:00") from the selected option
+                    const selectedTimeSlot = timeInput.options[timeInput.selectedIndex].text;
+            
+                    // Call the availability API
+                    fetch(`/api/check-availability/?date=${date}&start_time=${selectedTimeSlot}&court=${court}&duration=${duration}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.available) {
+                                bookButton.disabled = false;
+                                bookButton.classList.remove("btn-disabled");
+                                bookButton.classList.add("btn-primary");
+                                messageDiv.innerHTML = "";
+                            } else {
+                                bookButton.disabled = true;
+                                bookButton.classList.remove("btn-primary");
+                                bookButton.classList.add("btn-disabled");
+                                messageDiv.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${data.message}`;
+                            }
+                        })
+                        .catch(error => console.error("Error checking availability:", error));
+                }
+            
+                // Attach event listeners to inputs
+                dateInput.addEventListener("change", checkAvailability);
+                timeInput.addEventListener("change", checkAvailability);
+                courtInput.addEventListener("change", checkAvailability);
+                durationInput.addEventListener("change", checkAvailability);
+            
+                // Insert the message div below the submit button
+                bookButton.parentNode.insertBefore(messageDiv, bookButton.nextSibling);
+            });
+            
+            // Function to change duration
+            function changeDuration(change) {
+                const durationInput = document.getElementById("durationInput");
+                let duration = parseInt(durationInput.value) || 1;
+                duration += change;
+                if (duration < 1) duration = 1; // Ensure duration is at least 1 hour
+                durationInput.value = duration;
+            
+                // Trigger availability check after changing duration
+                const event = new Event("change");
+                durationInput.dispatchEvent(event);
+            }
+
+        </script>
+
+        
+    
+    <!-- AOS JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>AOS.init();</script>
+
+
+    
+</body>
+</html>
