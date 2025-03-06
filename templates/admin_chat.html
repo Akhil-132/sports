@@ -1,0 +1,149 @@
+<h2>Admin Chat Panel</h2>
+
+<div style="display: flex;">
+    <div style="width: 200px; border-right: 1px solid #ccc;">
+        <h3>Customers</h3>
+        <ul id="customer-list">
+            {% for customer in customers %}
+                <li><a href="#" onclick="selectCustomer({{ customer.id }})">{{ customer.username }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div style="flex-grow: 1; padding: 10px;">
+        <h3>Chat</h3>
+        <div id="chat-box" style="border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px;"></div>
+        <textarea id="message" placeholder="Type your message"></textarea>
+        <button onclick="sendMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+    let selectedCustomerId = null;
+
+    // Function to load customers who have exchanged messages with the admin
+    function loadMessagedCustomers() {
+        fetch(`/get_messaged_customers/`)  // Add this endpoint in your Django views
+            .then(response => response.json())
+            .then(data => {
+                const customerList = document.getElementById('customer-list');
+                customerList.innerHTML = '';
+                data.forEach(customer => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<a href="#" onclick="selectCustomer(${customer.id})">${customer.username}</a>`;
+                    customerList.appendChild(li);
+                });
+            });
+    }
+
+    function selectCustomer(customerId) {
+        selectedCustomerId = customerId;
+        loadMessages();
+    }
+
+    function loadMessages() {
+        if (!selectedCustomerId) return;
+        fetch(`/get_messages/?other_user_id=${selectedCustomerId}`)
+            .then(response => response.json())
+            .then(data => {
+                const chatBox = document.getElementById('chat-box');
+                chatBox.innerHTML = '';
+                data.forEach(msg => {
+                    const msgDiv = document.createElement('div');
+                    // Add a class to differentiate between sender and receiver
+                    if (msg.sender === '{{ request.user.username }}') {
+                        msgDiv.className = 'message-sender';
+                    } else {
+                        msgDiv.className = 'message-receiver';
+                    }
+                    msgDiv.innerHTML = `
+                        <div class="message-content">${msg.message}</div>
+                        <div class="message-timestamp">${msg.timestamp}</div>
+                    `;
+                    chatBox.appendChild(msgDiv);
+                });
+                // Scroll to the bottom of the chat box
+                chatBox.scrollTop = chatBox.scrollHeight;
+            });
+    }
+
+    function sendMessage() {
+        if (!selectedCustomerId) return;
+        const message = document.getElementById('message').value;
+        fetch(`/send_message/`, {
+            method: 'POST',
+            headers: {'X-CSRFToken': '{{ csrf_token }}'},
+            body: new URLSearchParams({
+                'receiver_id': selectedCustomerId,
+                'message': message
+            })
+        }).then(response => response.json()).then(() => {
+            document.getElementById('message').value = '';
+            loadMessages();
+        });
+    }
+
+    // Load messaged customers and messages every 2 seconds
+    setInterval(() => {
+        loadMessagedCustomers();
+        if (selectedCustomerId) loadMessages();
+    }, 2000);
+
+    // Initial load
+    loadMessagedCustomers();
+</script>
+
+<style>
+    /* Chat message container */
+    #chat-box {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    /* Sender's message (right side for admin) */
+    .message-sender {
+        align-self: flex-end;
+        background-color: #e1f5fe; /* Light blue background */
+        padding: 10px;
+        border-radius: 10px;
+        max-width: 70%;
+    }
+
+    /* Receiver's message (left side for customer) */
+    .message-receiver {
+        align-self: flex-start;
+        background-color: #f5f5f5; /* Light gray background */
+        padding: 10px;
+        border-radius: 10px;
+        max-width: 70%;
+    }
+
+    /* Message content */
+    .message-content {
+        font-size: 14px;
+    }
+
+    /* Timestamp */
+    .message-timestamp {
+        font-size: 10px;
+        color: #666;
+        margin-top: 5px;
+    }
+
+    /* Customer list styling */
+    #customer-list {
+        list-style-type: none;
+        padding: 0;
+    }
+    #customer-list li {
+        margin: 5px 0;
+    }
+    #customer-list a {
+        text-decoration: none;
+        color: #000;
+    }
+    #customer-list a:hover {
+        text-decoration: underline;
+    }
+</style>

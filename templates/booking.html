@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Booking - {{ venue.name }}</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;  /* Ensures table has enough width to trigger horizontal scroll if needed */
+        }
+        th, td {
+            border: 1px solid black;
+            text-align: center;
+            padding: 5px;
+            min-width: 80px; /* Ensures cells have enough space */
+        }
+        .booked {
+            background-color: #f28b82;
+            color: white;
+        }
+        .available {
+            background-color:rgb(76, 228, 134);
+            cursor: pointer;
+        }
+        .selected {
+            background-color: #fbbc04;
+        }
+        .time-slot-cell {
+            cursor: pointer;
+        }
+
+        /* Add scroll container for horizontal and vertical scroll */
+        .booking-table-container {
+            max-height: 700px; /* Adjust height as needed */
+            overflow-x: auto;  /* Horizontal scroll */
+            overflow-y: auto;  /* Vertical scroll */
+            border: 1px solid #ccc; /* Optional for visual border */
+        }
+    </style>
+</head>
+<body>
+    <h2>{{ venue.name }}</h2>
+
+    <div class="form-container">
+        <label for="userName">User Name:</label>
+        <input type="text" id="userName" name="username" value="{{ user.username }}" readonly>
+
+        <label for="sport">Sport:</label>
+        <select id="sport">
+            {% for sport in distinct_sports %}
+            <option value="{{ sport.id }}">{{ sport }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="bookingDate">Select Date:</label>
+        <input type="date" id="bookingDate" name="date"
+        value="{{ selected_date }}"
+        min="{{ today }}"
+        {% if max_date %} max="{{ max_date }}" {% endif %}>
+
+
+
+        <div class="price-display">Total Price: ₹<span id="totalPrice">0</span></div>
+    </div>
+
+    <!-- Scrollable container -->
+    <div class="booking-table-container">
+        <table id="bookingGrid">
+            <thead>
+                <tr>
+                    <th>Court / Time</th>
+                    <!-- This will be filled dynamically with time slots -->
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Rows for each court will be filled dynamically -->
+            </tbody>
+        </table>
+    </div>
+<!-- Add to Cart Button -->
+<button id="addToCartBtn" disabled onclick="openCartModal()">Add to Cart</button>
+
+<!-- Modal (hidden by default) -->
+<div id="cartModal" style="display: none; position: fixed; top: 20%; left: 50%; transform: translate(-50%, 0); background: white; border: 1px solid #ccc; padding: 20px; z-index: 1000;">
+    <h3>Booking Summary</h3>
+    <p><strong>Name:</strong> <span id="modalUserName"></span></p>
+    <p><strong>Date:</strong> <span id="modalDate"></span></p>
+    <p><strong>Sport:</strong> <span id="modalSport"></span></p>
+    <p><strong>Duration :</strong> <span id="modalDuration"></span> </p>
+    <p><strong>Courts:</strong> <span id="modalCourts"></span></p>
+    <p><strong>Total Price:</strong> ₹<span id="modalTotalPrice"></span></p>
+
+    <!-- Hidden fields for start_time and end_time -->
+    <span id="modalStartTime" style="display: none;"></span>
+    <span id="modalEndTime" style="display: none;"></span>
+
+    <button onclick="submitBooking()">Confirm Booking</button>
+    <button onclick="closeCartModal()">Close</button>
+</div>
+
+<!-- Background overlay for modal -->
+<div id="modalOverlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 999;"></div>
+
+    <script>
+    // Extract data from Django context (passed as JSON from the backend)
+const timeSlots = {{ time_slots_json|safe }};
+const courts = {{ courts_json|safe }};
+const bookedSlots = {{ booked_slots_json|safe }};
+
+// DOM elements
+const bookingGrid = document.getElementById('bookingGrid');
+const thead = bookingGrid.querySelector('thead tr');
+const tbody = bookingGrid.querySelector('tbody');
+const totalPriceDisplay = document.getElementById('totalPrice');
+const sportSelect = document.getElementById('sport');
+const bookingDate = document.getElementById('bookingDate');
+
+// State variables
+const selectedSlots = new Set();  // Track selected slots
+let courtPrices = {};  // Court number -> price map
+
+// ==================
+// Event Listeners
+// ==================
+sportSelect.addEventListener('change', fetchAndRenderBookings);
+bookingDate.addEventListener('change', fetchAndRenderBookings);
+
+// ==================
+// Fetch Bookings and Update Grid
+// ==================
+async function fetchAndRenderBookings() {
+    const selectedDate = bookingDate.value;
+    const sportId = sportSelect.value;
+
+    try {
+        const response = await fetch(`/api/get_bookings/?date=${selectedDate}&sport_id=${sportId}`);
+        const data = await response.json();
+
+        // Clear and replace bookedSlots object
+        for (const key in bookedSlots) {
+            delete bookedSlots[key];
+        }
+        Object.assign(bookedSlots, data.booked_slots);
+
+        // Clear selections and update grid
+        selectedSlots.clear();
+        initializeCourtPrices();
+        createBookingGrid();
+    } catch (error) {
+        console.error('Error fetching bookings:', error);
+    }
+}
+
+// ==================
+// Initialize Court Prices (Only for Selected Sport)
+// ==================
+function initializeCourtPrices() {
+    courtPrices = {};
+    const selectedSport = parseInt(sportSelect.value);
+
+    // Filter courts for selected sport and set prices
+    const filteredCourts = courts.filter(court => court.sport_id === selectedSport);
+    filteredCourts.forEach(court => {
+        const key = `Court${court.court_number}`;
+        courtPrices[key] = court.price;
+    });
+
+    
+}
+
+// ==================
+// Create Booking Grid (For Selected Sport)
+// ==================
+function createBookingGrid() {
+    const selectedSport = parseInt(sportSelect.value);
+
+    // Filter courts for selected sport
+    const filteredCourts = courts.filter(court => court.sport_id === selectedSport);
+
+    // Reset table headers and body
+    thead.innerHTML = '<th>Court / Time</th>';
+    tbody.innerHTML = '';
+
+    // Populate time slot headers
+    timeSlots.forEach(time => {
+        const th = document.createElement('th');
+        th.innerText = time;
+        thead.appendChild(th);
+    });
+
+    // Populate table rows for each court
+    filteredCourts.forEach(court => {
+        const tr = document.createElement('tr');
+        const courtHeader = document.createElement('td');
+        courtHeader.innerText = `Court ${court.court_number}`;
+        tr.appendChild(courtHeader);
+
+        timeSlots.forEach(time => {
+            const td = document.createElement('td');
+            td.className = 'time-slot-cell';
+
+            // Check if the slot is booked for this court and sport
+            const isBooked = bookedSlots[time] && bookedSlots[time].includes(court.court_number);
+
+            if (isBooked) {
+                td.classList.add('booked');
+                td.innerText = 'Booked';
+            } else {
+                td.classList.add('available');
+                td.innerText = 'Available';
+                td.dataset.time = time;
+                td.dataset.court = court.court_number;
+
+                // Add click listener to handle slot selection
+                td.addEventListener('click', () => handleSlotClick(td, time, court.court_number));
+            }
+
+            tr.appendChild(td);
+        });
+
+        tbody.appendChild(tr);
+    });
+
+    // Update total price (in case user switched sport while slots were selected)
+    updateTotalPrice();
+}
+
+// ==================
+// Handle Slot Selection / Deselection
+// ==================
+function handleSlotClick(td, time, courtNumber) {
+    if (td.classList.contains('booked')) return;  // Ignore booked slots
+
+    const slotKey = `${time}-Court${courtNumber}`;
+
+    if (td.classList.contains('selected')) {
+        td.classList.remove('selected');
+        selectedSlots.delete(slotKey);
+    } else {
+        td.classList.add('selected');
+        selectedSlots.add(slotKey);
+    }
+
+    updateTotalPrice();
+}
+
+// ==================
+// Update Total Price
+// ==================
+function updateTotalPrice() {
+    let totalPrice = 0;
+
+    selectedSlots.forEach(slot => {
+        const courtNumber = slot.split('-Court')[1];
+        const courtKey = `Court${courtNumber}`;
+        const price = courtPrices[courtKey] || 0;
+        totalPrice += price;
+    });
+
+    totalPriceDisplay.innerText = totalPrice.toFixed(2);
+}
+
+// ==================
+// Initial Load
+// ==================
+fetchAndRenderBookings();
+
+
+    </script>
+
+<script>
+    const addToCartBtn = document.getElementById('addToCartBtn');
+const cartModal = document.getElementById('cartModal');
+const modalOverlay = document.getElementById('modalOverlay');
+
+// Open Modal with filled details
+function openCartModal() {
+    const userName = document.getElementById('userName').value;
+    const selectedDate = bookingDate.value;
+    const selectedSportText = sportSelect.options[sportSelect.selectedIndex].text;
+    const selectedCourts = Array.from(selectedSlots).map(slot => slot.split('-Court')[1]).filter((v, i, arr) => arr.indexOf(v) === i).join(', ');
+
+    // Calculate start_time, end_time, and duration
+    const times = Array.from(selectedSlots).map(slot => parseInt(slot.split('-')[0])); // Extract times
+    const startTime = Math.min(...times); // Earliest selected time
+    const endTime = Math.max(...times) + 1; // Latest selected time + 1 hour
+    const duration = endTime - startTime; // Duration in hours
+
+    // Update visible fields
+    document.getElementById('modalUserName').innerText = userName;
+    document.getElementById('modalDate').innerText = selectedDate;
+    document.getElementById('modalSport').innerText = selectedSportText;
+    document.getElementById('modalDuration').innerText = duration; // Display duration
+    document.getElementById('modalCourts').innerText = selectedCourts;
+    document.getElementById('modalTotalPrice').innerText = totalPriceDisplay.innerText;
+
+    // Update hidden fields
+    document.getElementById('modalStartTime').innerText = startTime;
+    document.getElementById('modalEndTime').innerText = endTime;
+
+    // Show modal
+    cartModal.style.display = 'block';
+    modalOverlay.style.display = 'block';
+}
+
+// Close modal
+function closeCartModal() {
+    cartModal.style.display = 'none';
+    modalOverlay.style.display = 'none';
+}
+
+// Handle Pay Now (you can replace with your actual payment logic)
+function payNow() {
+    alert('Redirecting to payment gateway...');
+    // Here you could add logic to submit booking data to your backend
+    closeCartModal();
+}
+
+// Enable/Disable Add to Cart button based on slot selection
+function updateAddToCartButton() {
+    addToCartBtn.disabled = selectedSlots.size === 0;
+}
+
+// Update the total price and also enable/disable add to cart button
+function updateTotalPrice() {
+    let totalPrice = 0;
+
+    selectedSlots.forEach(slot => {
+        const courtNumber = slot.split('-Court')[1];
+        const courtKey = `Court${courtNumber}`;
+        const price = courtPrices[courtKey] || 0;
+        totalPrice += price;
+    });
+
+    totalPriceDisplay.innerText = totalPrice.toFixed(2);
+    updateAddToCartButton();
+}
+
+
+// Function to format time as HH:MM:SS
+const formatTime = (time) => {
+    const timeWithoutAmPm = time.replace(/\s*[AP]M/i, '');
+    const [hours, minutes] = timeWithoutAmPm.split(':');
+    const isPM = time.toLowerCase().includes('pm');
+    let formattedHours = parseInt(hours, 10);
+    if (isPM && formattedHours < 12) {
+        formattedHours += 12; // Convert to 24-hour format
+    } else if (!isPM && formattedHours === 12) {
+        formattedHours = 0; // Handle 12 AM
+    }
+    const formattedMinutesStr = (minutes || '00').padStart(2, '0');
+    return `${formattedHours.toString().padStart(2, '0')}:${formattedMinutesStr}:00`;
+};
+
+
+
+// Function to group contiguous time slots
+function groupContiguousSlots(selectedSlots) {
+    const slots = Array.from(selectedSlots).map(slot => slot.split('-')[0]); // Extract time part
+    slots.sort((a, b) => new Date(`1970-01-01T${a}`) - new Date(`1970-01-01T${b}`)); // Sort by time
+
+    const groupedSlots = [];
+    let currentGroup = [slots[0]];
+
+    for (let i = 1; i < slots.length; i++) {
+        const prevTime = new Date(`1970-01-01T${slots[i - 1]}`);
+        const currTime = new Date(`1970-01-01T${slots[i]}`);
+
+        // Check if the current slot is contiguous with the previous one
+        if ((currTime - prevTime) === 30 * 60 * 1000) { // 30 minutes in milliseconds
+            currentGroup.push(slots[i]);
+        } else {
+            groupedSlots.push(currentGroup);
+            currentGroup = [slots[i]];
+        }
+    }
+
+    if (currentGroup.length > 0) {
+        groupedSlots.push(currentGroup);
+    }
+
+    console.log("Grouped Slots:", groupedSlots); // Debugging
+    return groupedSlots;
+}
+
+function getCSRFToken() {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim();
+            if (cookie.startsWith('csrftoken=')) {
+                cookieValue = cookie.substring('csrftoken='.length, cookie.length);
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
+
+// Function to submit booking
+function submitBooking() {
+    const customerId = "{{ user.id }}"; // Replace with the correct way to get the customer's ID
+    const venueId = "{{ venue.id }}";   // Replace with the correct way to get the venue's ID
+
+    // Get all selected courts with their prices
+    const selectedCourts = Array.from(selectedSlots).map(slot => {
+        const courtNumber = slot.split('-Court')[1];
+        const courtKey = `Court${courtNumber}`;
+        const price = courtPrices[courtKey] || 0; // Get the price for this court
+        return {
+            courtId: parseInt(courtNumber),
+            price: price,
+            time: slot.split('-')[0] // Extract time part
+        };
+    });
+
+    // Group selected slots by court
+    const courtsMap = new Map();
+    selectedCourts.forEach(court => {
+        if (!courtsMap.has(court.courtId)) {
+            courtsMap.set(court.courtId, []);
+        }
+        courtsMap.get(court.courtId).push(court);
+    });
+
+    // Process each court's slots
+    courtsMap.forEach((slots, courtId) => {
+        // Sort slots by time
+        slots.sort((a, b) => new Date(`1970-01-01T${a.time}`) - new Date(`1970-01-01T${b.time}`));
+
+        // Group contiguous slots
+        const groupedSlots = groupContiguousSlots(slots.map(slot => slot.time));
+
+        // Create a booking for each group of contiguous slots
+        groupedSlots.forEach(group => {
+            const startTime = group[0]; // First slot in the group
+            const endTime = group[group.length - 1]; // Last slot in the group
+
+            // Calculate duration (in hours)
+            const duration = group.length * 0.5; // Each slot is 30 minutes (0.5 hours)
+
+            // Calculate price for this group
+            const price = slots.find(slot => slot.time === startTime).price * duration;
+
+            const bookingData = {
+                customer: parseInt(customerId), // Send customer ID
+                venue: parseInt(venueId),       // Send venue ID
+                sport: parseInt(sportSelect.value), // Send sport ID
+                court: courtId, // Send the court ID
+                date: bookingDate.value, // Send selected date
+                start_time: formatTime(startTime), // Format as "HH:MM:SS"
+                end_time: formatTime(endTime),     // Format as "HH:MM:SS"
+                price: price // Send the price for this group
+            };
+
+            console.log(bookingData); // Debugging: Log the payload
+
+            fetch('/api/bookings/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCSRFToken()  // Add CSRF token here
+                },
+                body: JSON.stringify(bookingData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Booking failed');
+                }
+            })
+            .then(data => {
+                alert('Booking successful!');
+                closeCartModal();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Booking failed: ' + error.message);
+            });
+        });
+    });
+}
+</script>
+
+<script>
+    
+</script>
+
+</body>
+</html>
