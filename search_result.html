@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Meet</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <!-- Swiper.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+</head>
+<body>
+     <!-- Navbar -->
+     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand meet" href="index.html">Sports Meet</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="d-flex justify-content-between w-100">
+                    <div class="d-flex justify-content-center flex-grow-1">
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link" href="#venue">Venues</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#sport">Sports</a></li>
+                        </ul>
+                    </div>
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="login.html">Login/Register</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    
+    
+    <!-- Hero Section with Search -->
+    <div class="hero-section1">
+        <div class="search-section1 mt-4">
+            <form class="row g-3 result" id="searchForm">
+                <!-- Location Input with Icon -->
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-geo-alt"></i> <!-- Bootstrap Location Icon -->
+                        </span>
+                        <input type="text" class="form-control location" id="locationInput" placeholder="Enter Location" required>
+                    </div>
+                </div>
+    
+                <!-- Sport Dropdown -->
+                <div class="col-md-3">
+                    <select class="form-select location" id="sportInput">
+                        <option selected>Select Sport</option>
+                        <option>Cricket</option>
+                        <option>Badminton</option>
+                        <option>Soccer</option>
+                        <option>Basketball</option>
+                        <option>Swimming</option>
+                    </select>
+                </div>
+    
+                <!-- Date Input -->
+                <div class="col-md-2">
+                    <input type="date" class="form-control location" id="dateInput" required>
+                </div>
+    
+                <!-- Time Input -->
+                <div class="col-md-2">
+                    <input type="time" class="form-control location" id="timeInput" required>
+                </div>
+    
+                <!-- Search Button -->
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-light w-100 location">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+
+    <!-- Search Results Section -->
+<div id="searchResults" class="mt-4"></div>
+    
+<div class="container-fluid mt-5 mb-2"> 
+    <div class="row g-2">
+     <div class=" col-md-3  shadow1 border-0 p-3">
+                            <!-- Image -->
+     <img src="assets/images/natinal-sdm.jpg" class="card-img-top" alt="Stadium">
+                            
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <!-- Left: Rating -->
+                                    <div class="card-name">
+                                        <h5>National Stadium</h5>
+                                    </div>
+                                   
+        
+                                    <!-- Right: Card Name -->
+                                    <div class="rating">
+                                        <strong>4.5</strong> <i class="bi bi-star-fill text-warning"></i>
+                                    </div>
+                                </div>
+        
+                                <!-- Below: Address and Image Gallery -->
+                                <div class="d-flex justify-content-between mt-3">
+                                    <!-- Left: Address (Truncated) -->
+                                    <div class="address" id="addressDiv" style="max-width: 150px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                        123 Main St, City, Country, Some Extra Address Information that is too long
+                                    </div>
+        
+                                    <!-- Right: Additional Images -->
+                                    <div class="additional-images">
+                                        <div class="d-flex">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image" alt="Additional Image" style="width: 48%; margin-right: 4%;">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image" alt="Additional Image" style="width: 48%;">
+                                            
+                                            <!-- Hidden Images -->
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image hidden" alt="Additional Image" style="width: 48%;display: none;">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image hidden" alt="Additional Image" style="width: 48%;display: none;">
+                                        </div>
+        
+                                        <!-- "+X more images" Text -->
+                                        <!-- <div class="more-images text-primary" style="cursor: pointer; display: none; margin-top: 10px;" onclick="openSlider()">
+                                            <small class="text-muted">+<span id="extraCount"></span> more images</small>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <div class="col-md-3  shadow1 border-0 p-3">
+                            <!-- Image -->
+                            <img src="assets/images/natinal-sdm.jpg" class="card-img-top" alt="Stadium">
+                            
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <!-- Left: Rating -->
+                                    <div class="card-name">
+                                        <h5>National Stadium</h5>
+                                    </div>
+                                   
+        
+                                    <!-- Right: Card Name -->
+                                    <div class="rating">
+                                        <strong>4.5</strong> <i class="bi bi-star-fill text-warning"></i>
+                                    </div>
+                                </div>
+        
+                                <!-- Below: Address and Image Gallery -->
+                                <div class="d-flex justify-content-between mt-3">
+                                    <!-- Left: Address (Truncated) -->
+                                    <div class="address" id="addressDiv" style="max-width: 150px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                        123 Main St, City, Country, Some Extra Address Information that is too long
+                                    </div>
+        
+                                    <!-- Right: Additional Images -->
+                                    <div class="additional-images">
+                                        <div class="d-flex">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image" alt="Additional Image" style="width: 48%; margin-right: 4%;">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image" alt="Additional Image" style="width: 48%;">
+                                            
+                                            <!-- Hidden Images -->
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image hidden" alt="Additional Image" style="width: 48%;display: none;">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image hidden" alt="Additional Image" style="width: 48%;display: none;">
+                                        </div>
+        
+                                        <!-- "+X more images" Text -->
+                                        <!-- <div class="more-images text-primary" style="cursor: pointer; display: none; margin-top: 10px;" onclick="openSlider()">
+                                            <small class="text-muted">+<span id="extraCount"></span> more images</small>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                   
+                   
+                        <div class=" col-md-3  shadow1 border-0 p-3">
+                            <!-- Image -->
+                            <img src="assets/images/natinal-sdm.jpg" class="card-img-top" alt="Stadium">
+                            
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <!-- Left: Rating -->
+                                    <div class="card-name">
+                                        <h5>National Stadium</h5>
+                                    </div>
+                                   
+        
+                                    <!-- Right: Card Name -->
+                                    <div class="rating">
+                                        <strong>4.5</strong> <i class="bi bi-star-fill text-warning"></i>
+                                    </div>
+                                </div>
+        
+                                <!-- Below: Address and Image Gallery -->
+                                <div class="d-flex justify-content-between mt-3">
+                                    <!-- Left: Address (Truncated) -->
+                                    <div class="address" id="addressDiv" style="max-width: 150px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                        123 Main St, City, Country, Some Extra Address Information that is too long
+                                    </div>
+        
+                                    <!-- Right: Additional Images -->
+                                    <div class="additional-images">
+                                        <div class="d-flex">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image" alt="Additional Image" style="width: 48%; margin-right: 4%;">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image" alt="Additional Image" style="width: 48%;">
+                                            
+                                            <!-- Hidden Images -->
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image hidden" alt="Additional Image" style="width: 48%;display: none;">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image hidden" alt="Additional Image" style="width: 48%;display: none;">
+                                        </div>
+        
+                                        <!-- "+X more images" Text -->
+                                        <!-- <div class="more-images text-primary" style="cursor: pointer; display: none; margin-top: 10px;" onclick="openSlider()">
+                                            <small class="text-muted">+<span id="extraCount"></span> more images</small>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                 
+                
+                        <div class=" col-md-3 shadow1 border-0 p-3">
+                            <!-- Image -->
+                            <img src="assets/images/natinal-sdm.jpg" class="card-img-top" alt="Stadium">
+                            
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <!-- Left: Rating -->
+                                    <div class="card-name">
+                                        <h5>National Stadium</h5>
+                                    </div>
+                                   
+        
+                                    <!-- Right: Card Name -->
+                                    <div class="rating">
+                                        <strong>4.5</strong> <i class="bi bi-star-fill text-warning"></i>
+                                    </div>
+                                </div>
+        
+                                <!-- Below: Address and Image Gallery -->
+                                <div class="d-flex justify-content-between mt-3">
+                                    <!-- Left: Address (Truncated) -->
+                                    <div class="address" id="addressDiv" style="max-width: 150px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                        123 Main St, City, Country, Some Extra Address Information that is too long
+                                    </div>
+        
+                                    <!-- Right: Additional Images -->
+                                    <div class="additional-images">
+                                        <div class="d-flex">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image" alt="Additional Image" style="width: 48%; margin-right: 4%;">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image" alt="Additional Image" style="width: 48%;">
+                                            
+                                            <!-- Hidden Images -->
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image hidden" alt="Additional Image" style="width: 48%;display: none;">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image hidden" alt="Additional Image" style="width: 48%;display: none;">
+                                        </div>
+        
+                                        <!-- "+X more images" Text -->
+                                        <!-- <div class="more-images text-primary" style="cursor: pointer; display: none; margin-top: 10px;" onclick="openSlider()">
+                                            <small class="text-muted">+<span id="extraCount"></span> more images</small>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+              
+                    
+                        <div class=" col-md-3  shadow1 border-0 p-3 mt-5">
+                            <!-- Image -->
+                            <img src="assets/images/natinal-sdm.jpg" class="card-img-top" alt="Stadium">
+                            
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <!-- Left: Rating -->
+                                    <div class="card-name">
+                                        <h5>National Stadium</h5>
+                                    </div>
+                                   
+        
+                                    <!-- Right: Card Name -->
+                                    <div class="rating">
+                                        <strong>4.5</strong> <i class="bi bi-star-fill text-warning"></i>
+                                    </div>
+                                </div>
+        
+                                <!-- Below: Address and Image Gallery -->
+                                <div class="d-flex justify-content-between mt-3">
+                                    <!-- Left: Address (Truncated) -->
+                                    <div class="address" id="addressDiv" style="max-width: 150px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                        123 Main St, City, Country, Some Extra Address Information that is too long
+                                    </div>
+        
+                                    <!-- Right: Additional Images -->
+                                    <div class="additional-images">
+                                        <div class="d-flex">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image" alt="Additional Image" style="width: 48%; margin-right: 4%;">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image" alt="Additional Image" style="width: 48%;">
+                                            
+                                            <!-- Hidden Images -->
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image hidden" alt="Additional Image" style="width: 48%;display: none;">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image hidden" alt="Additional Image" style="width: 48%;display: none;">
+                                        </div>
+        
+                                        <!-- "+X more images" Text -->
+                                        <!-- <div class="more-images text-primary" style="cursor: pointer; display: none; margin-top: 10px;" onclick="openSlider()">
+                                            <small class="text-muted">+<span id="extraCount"></span> more images</small>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class=" col-md-3  shadow1 border-0 p-3 mt-5">
+                            <!-- Image -->
+                            <img src="assets/images/natinal-sdm.jpg" class="card-img-top" alt="Stadium">
+                            
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <!-- Left: Rating -->
+                                    <div class="card-name">
+                                        <h5>National Stadium</h5>
+                                    </div>
+                                   
+        
+                                    <!-- Right: Card Name -->
+                                    <div class="rating">
+                                        <strong>4.5</strong> <i class="bi bi-star-fill text-warning"></i>
+                                    </div>
+                                </div>
+        
+                                <!-- Below: Address and Image Gallery -->
+                                <div class="d-flex justify-content-between mt-3">
+                                    <!-- Left: Address (Truncated) -->
+                                    <div class="address" id="addressDiv" style="max-width: 150px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                        123 Main St, City, Country, Some Extra Address Information that is too long
+                                    </div>
+        
+                                    <!-- Right: Additional Images -->
+                                    <div class="additional-images">
+                                        <div class="d-flex">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image" alt="Additional Image" style="width: 48%; margin-right: 4%;">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image" alt="Additional Image" style="width: 48%;">
+                                            
+                                            <!-- Hidden Images -->
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image hidden" alt="Additional Image" style="width: 48%;display: none;">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image hidden" alt="Additional Image" style="width: 48%;display: none;">
+                                        </div>
+        
+                                        <!-- "+X more images" Text -->
+                                        <!-- <div class="more-images text-primary" style="cursor: pointer; display: none; margin-top: 10px;" onclick="openSlider()">
+                                            <small class="text-muted">+<span id="extraCount"></span> more images</small>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" col-md-3  shadow1 border-0 p-3 mt-5">
+                            <!-- Image -->
+                            <img src="assets/images/natinal-sdm.jpg" class="card-img-top" alt="Stadium">
+                            
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <!-- Left: Rating -->
+                                    <div class="card-name">
+                                        <h5>National Stadium</h5>
+                                    </div>
+                                   
+        
+                                    <!-- Right: Card Name -->
+                                    <div class="rating">
+                                        <strong>4.5</strong> <i class="bi bi-star-fill text-warning"></i>
+                                    </div>
+                                </div>
+        
+                                <!-- Below: Address and Image Gallery -->
+                                <div class="d-flex justify-content-between mt-3">
+                                    <!-- Left: Address (Truncated) -->
+                                    <div class="address" id="addressDiv" style="max-width: 150px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                        123 Main St, City, Country, Some Extra Address Information that is too long
+                                    </div>
+        
+                                    <!-- Right: Additional Images -->
+                                    <div class="additional-images">
+                                        <div class="d-flex">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image" alt="Additional Image" style="width: 48%; margin-right: 4%;">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image" alt="Additional Image" style="width: 48%;">
+                                            
+                                            <!-- Hidden Images -->
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image hidden" alt="Additional Image" style="width: 48%;display: none;">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image hidden" alt="Additional Image" style="width: 48%;display: none;">
+                                        </div>
+        
+                                        <!-- "+X more images" Text -->
+                                        <!-- <div class="more-images text-primary" style="cursor: pointer; display: none; margin-top: 10px;" onclick="openSlider()">
+                                            <small class="text-muted">+<span id="extraCount"></span> more images</small>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class=" col-md-3  shadow1 border-0 p-3 mt-5">
+                            <!-- Image -->
+                            <img src="assets/images/natinal-sdm.jpg" class="card-img-top" alt="Stadium">
+                            
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <!-- Left: Rating -->
+                                    <div class="card-name">
+                                        <h5>National Stadium</h5>
+                                    </div>
+                                   
+        
+                                    <!-- Right: Card Name -->
+                                    <div class="rating">
+                                        <strong>4.5</strong> <i class="bi bi-star-fill text-warning"></i>
+                                    </div>
+                                </div>
+        
+                                <!-- Below: Address and Image Gallery -->
+                                <div class="d-flex justify-content-between mt-3">
+                                    <!-- Left: Address (Truncated) -->
+                                    <div class="address" id="addressDiv" style="max-width: 150px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;">
+                                        123 Main St, City, Country, Some Extra Address Information that is too long
+                                    </div>
+        
+                                    <!-- Right: Additional Images -->
+                                    <div class="additional-images">
+                                        <div class="d-flex">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image" alt="Additional Image" style="width: 48%; margin-right: 4%;">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image" alt="Additional Image" style="width: 48%;">
+                                            
+                                            <!-- Hidden Images -->
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image hidden" alt="Additional Image" style="width: 48%;display: none;">
+                                            <img src="assets/images/natinal-sdm.jpg" class="img-fluid rounded extra-image hidden" alt="Additional Image" style="width: 48%;display: none;">
+                                        </div>
+        
+                                        <!-- "+X more images" Text -->
+                                        <!-- <div class="more-images text-primary" style="cursor: pointer; display: none; margin-top: 10px;" onclick="openSlider()">
+                                            <small class="text-muted">+<span id="extraCount"></span> more images</small>
+                                        </div> -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    
+                 </div>
+                 </div>
+    
+   
+   
+ <!-- Footer Section -->
+<div class="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Contact Us Section -->
+            <div class="col-md-3">
+                <h5>Contact Us</h5>
+                <div class="footer-links">
+                    <a href="#">Email Us</a>
+                    <a href="#">FAQ</a>
+                    <a href="#">Support</a>
+                    <a href="#">Terms & Conditions</a>
+                </div>
+            </div>
+
+            <!-- Quick Links Section -->
+            <div class="col-md-3">
+                <h5>Quick Links</h5>
+                <div class="footer-links">
+                    <a href="#">Venues</a>
+                    <a href="#">Sports</a>
+                    <!-- <a href="#">Privacy Policy</a> -->
+                </div>
+            </div>
+
+              <!-- Follow Us Section -->
+              <div class="col-md-3">
+                <h5>Follow Us</h5>
+                <div class="footer-icons">
+                    <a href="#" class="facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="linkedin"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <!-- Newsletter Section -->
+            <div class="col-md-3">
+                <h5>Newsletter</h5>
+                <div class="newsletter">
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Enter your email" aria-label="Email Address">
+                        <button class="btn btn-primary">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="border-white">
+        <div class="row">
+            <div class="col-12 text-center">
+                <p>&copy; 2025 Sports Meet. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    <!-- Bootstrap JS -->
+
+<!-- Bootstrap JS and FontAwesome for Icons -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // Slice Address Text
+        let addressDiv = document.getElementById("addressDiv");
+        let fullAddress = addressDiv.innerText;
+        if (fullAddress.length > 30) {
+            addressDiv.innerText = fullAddress.slice(0, 30) + "...";
+        }
+
+        // Handle Additional Images
+        let images = document.querySelectorAll(".extra-image");
+        let hiddenImages = document.querySelectorAll(".extra-image.hidden");
+        let moreImagesDiv = document.querySelector(".more-images");
+        let extraCountSpan = document.getElementById("extraCount");
+
+        // Show "+X more images" if there are more than 2 images
+        if (hiddenImages.length > 0) {
+            moreImagesDiv.style.display = "block";
+            extraCountSpan.innerText = hiddenImages.length;
+        }
+    });
+
+    function openSlider() {
+    // Show all hidden images
+    let hiddenImages = document.querySelectorAll(".extra-image.hidden");
+    hiddenImages.forEach(image => {
+        image.style.display = "block";
+    });
+
+    // Show modal with carousel
+    let modal = document.getElementById("imageModal");
+    let sliderWrapper = document.getElementById("imageSlider");
+    sliderWrapper.innerHTML = ""; // Clear previous images
+
+    // Add all images to the modal slider
+    document.querySelectorAll(".extra-image").forEach(img => {
+        let slide = document.createElement("div");
+        slide.classList.add("swiper-slide");
+        let imgElement = document.createElement("img");
+        imgElement.src = img.src;
+        imgElement.classList.add("img-fluid");
+        slide.appendChild(imgElement);
+        sliderWrapper.appendChild(slide);
+    });
+
+    modal.style.display = "block";
+
+    new Swiper(".mySwiperModal", {
+        slidesPerView: 1,
+        navigation: { nextEl: ".swiper-button-next", prevEl: ".swiper-button-prev" },
+    });
+}
+
+function closeSlider() {
+    // Hide the modal
+    document.getElementById("imageModal").style.display = "none";
+    
+    // Reset visibility of images (show only the first two)
+    let allImages = document.querySelectorAll(".extra-image");
+    allImages.forEach((image, index) => {
+        if (index >= 2) {
+            image.style.display = "none";  // Hide images after the first two
+        }
+    });
+
+    // Make sure the "More Images" link is displayed again
+    let moreImagesDiv = document.querySelector(".more-images");
+    moreImagesDiv.style.display = "block";
+}
+</script>
+<!-- serachfunctionality -->
+<script>
+    document.getElementById("searchForm").addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent page reload
+
+        // Get input values
+        const location = document.getElementById("locationInput").value;
+        const sport = document.getElementById("sportInput").value;
+        const date = document.getElementById("dateInput").value;
+        const time = document.getElementById("timeInput").value;
+
+        // Validate inputs
+        if (!location || sport === "Select Sport" || !date || !time) {
+            alert("Please fill all fields correctly.");
+            return;
+        }
+
+        // Display search results (this can be replaced with API calls)
+        document.getElementById("searchResults").innerHTML = `
+            Searching for <b>${sport}</b> in <b>${location}</b> on <b>${date}</b> at <b>${time}</b>...`;
+        
+        console.log("Search Query:", { location, sport, date, time });
+    });
+</script>
+    
+    <!-- AOS JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>AOS.init();</script>
+</body>
+</html>

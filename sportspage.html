@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Meet</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="assets/css/style.css" rel="stylesheet">
+    <!-- Swiper.js CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+    
+    <!-- AOS CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+    
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+    <!-- Add Bootstrap Icons CDN link in the <head> section -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+</head>
+<body>
+     <!-- Navbar -->
+     <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand meet" href="index.html">Sports Meet</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="d-flex justify-content-between w-100">
+                    <div class="d-flex justify-content-center flex-grow-1">
+                        <ul class="navbar-nav">
+                            <li class="nav-item"><a class="nav-link" href="#venue">Venues</a></li>
+                            <li class="nav-item"><a class="nav-link" href="#sport">Sports</a></li>
+                        </ul>
+                    </div>
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link" href="login.html">Login/Register</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav> 
+    <!-- Hero Section with Search -->
+    <div class="hero-section1">
+        <div class="search-section1 mt-4">
+            <form class="row g-3 result" id="searchForm">
+                <!-- Location Input with Icon -->
+                <div class="col-md-3">
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-geo-alt"></i> <!-- Bootstrap Location Icon -->
+                        </span>
+                        <input type="text" class="form-control location" id="locationInput" placeholder="Enter Location" required>
+                    </div>
+                </div>
+    
+                <!-- Sport Dropdown -->
+                <div class="col-md-3">
+                    <select class="form-select location" id="sportInput">
+                        <option selected>Select Sport</option>
+                        <option>Cricket</option>
+                        <option>Badminton</option>
+                        <option>Soccer</option>
+                        <option>Basketball</option>
+                        <option>Swimming</option>
+                    </select>
+                </div>
+    
+                <!-- Date Input -->
+                <div class="col-md-2">
+                    <input type="date" class="form-control location" id="dateInput" required>
+                </div>
+    
+                <!-- Time Input -->
+                <div class="col-md-2">
+                    <input type="time" class="form-control location" id="timeInput" required>
+                </div>
+    
+                <!-- Search Button -->
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-light w-100 location">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+     <!-- Breadcrumb Section -->
+     <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Home</a></li>
+            <li class="breadcrumb-item"><a href="#">Venues</a></li>
+            <li class="breadcrumb-item active" aria-current="page" title="Melbourne Sports Complex">
+                Melbourne Sports Complex
+            </li>
+        </ol>
+    </nav>
+
+  <!-- Venue and Share Section -->
+<div class="container mt-5">
+    <div class="row">
+        <!-- Left Side: Venue Information -->
+        <div class="col-md-6">
+            <h2>Melbourne Sports Complex</h2>
+            <p class="text-truncate">Prince Valley Grand Stadium with world-class facilities and multiple indoor and outdoor arenas...</p>
+        </div>
+
+        <!-- Right Side: Share and Book Now -->
+        <div class="col-md-6 d-flex justify-content-end align-items-center gap-3">
+            <div class="share-icon-dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle share-btn" type="button" id="shareDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-share"></i> Share
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="shareDropdown">
+                    <li><a class="dropdown-item d-flex align-items-center" href="#"><i class="bi bi-facebook me-2 text-primary"></i> Facebook</a></li>
+                    <li><a class="dropdown-item d-flex align-items-center" href="#"><i class="bi bi-twitter me-2 text-info"></i> Twitter</a></li>
+                    <li><a class="dropdown-item d-flex align-items-center" href="#"><i class="bi bi-instagram me-2 text-danger"></i> Instagram</a></li>
+                    <li><a class="dropdown-item d-flex align-items-center" href="#"><i class="bi bi-linkedin me-2 text-primary"></i> LinkedIn</a></li>
+                </ul>
+            </div>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#bookNowPopup">Book Now</button>
+        </div>
+    </div>
+
+</div>
+
+  
+<!-- Booking Popup -->
+<div id="bookNowPopup" class="modal fade" tabindex="-1" aria-labelledby="bookNowModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md"> <!-- Large modal for better layout -->
+        <div class="modal-content shadow-md rounded-4">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="bookNowModalLabel">Melbourne Sports Complex</h5>
+                <button type="button" class="btn-close text-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body p-4">
+                <p class="text-muted text-center mb-1">Prince Valley Grand Stadium with world-class facilities.</p>
+               
+<!-- Interactive Star Rating -->
+<!-- <div class="text-center mb-1">
+    <span class="fs-5 fw-bold">Rating:</span>
+    <div class="rating d-inline-block">
+        <i class="far fa-star fs-4 text-warning" data-value="1"></i>
+        <i class="far fa-star fs-4 text-warning" data-value="2"></i>
+        <i class="far fa-star fs-4 text-warning" data-value="3"></i>
+        <i class="far fa-star fs-4 text-warning" data-value="4"></i>
+        <i class="far fa-star fs-4 text-warning" data-value="5"></i>
+    </div>
+    <span id="ratingValue" class="text-muted">(0 / 5)</span>
+</div> -->
+                <!-- Booking Form -->
+                <form id="bookingForm">
+                    <div class="row g-3 align-items-center p-4">
+                        <!-- Name -->
+                        <div class="col-md-4 text-start">
+                            <label for="nameInput" class="form-label fw-bold">Name:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control border-2 border-primary" id="nameInput" placeholder="Enter your name" required>
+                        </div>
+
+                        <!-- Sport -->
+                        <div class="col-md-4 text-start">
+                            <label for="sportInput" class="form-label fw-bold">Sport:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <select class="form-select border-2 border-primary" id="sportInput" required>
+                                <option value="" disabled selected>Select Sport</option>
+                                <option value="Basketball">Basketball</option>
+                                <option value="Cricket">Cricket</option>
+                                <option value="Football">Football</option>
+                            </select>
+                        </div>
+
+                        <!-- Date -->
+                        <div class="col-md-4 text-start">
+                            <label for="dateInput" class="form-label fw-bold">Date:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="date" class="form-control border-2 border-primary" id="dateInput" required>
+                        </div>
+
+                        <!-- Time (Only Hours) -->
+                        <div class="col-md-4 text-start">
+                            <label for="timeInput" class="form-label fw-bold">Time (Hours):</label>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="input-group d-flex align-items-center">
+                                <button class="btn btn-minus btn-circle me-2" type="button" onclick="decreaseTime()">-</button>
+                                <input type="number" class="form-control border-2 border-primary text-center" id="timeInput1" min="1" max="12" value="1" required>
+                                <button class="btn btn-plus btn-circle ms-2" type="button" onclick="increaseTime()">+</button>
+                            </div>
+                        </div>
+
+                        <!-- Duration -->
+                        <div class="col-md-4 text-start">
+                            <label for="durationInput" class="form-label fw-bold">Duration:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <select class="form-select border-2 border-primary" id="durationInput" required>
+                                <option value="" disabled selected>Select Duration</option>
+                                <option value="1">1 Hour</option>
+                                <option value="2">2 Hours</option>
+                                <option value="3">3 Hours</option>
+                                <option value="4">4 Hours</option>
+                                
+                            </select>
+                        </div>
+
+                        <!-- Court -->
+                        <div class="col-md-4 text-start">
+                            <label for="courtInput" class="form-label fw-bold">Court:</label>
+                        </div>
+                        <div class="col-md-8">
+                            <input type="text" class="form-control border-2 border-primary" id="courtInput" placeholder="Enter court number" required>
+                        </div>
+                    </div>
+
+                    <!-- Price Section -->
+                    <div class="mt-2text-center">
+                        <span class="fs-5 fw-bold text-dark">Price per Hour: <span class="text-success">$50</span></span>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="btn btn-success w-100  py-2 fs-5 rounded-3 shadow-lg transition-all hover:bg-success hover:shadow-xl">
+                        Pay Now
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container ">
+    <div class="row g-4">
+        <!-- Left Side: Large Image -->
+        <div class="col-md-8">
+            <div class="image-container h-100">
+                <img src="assets/images/sports-tools copy.jpg" alt="Large Image" class="img-fluid w-1001 h-100  object-fit-cover">
+            </div>
+        </div>
+
+        <!-- Right Side: Two Smaller Images -->
+        <div class="col-md-4 d-flex flex-column justify-content-between">
+            <div class="mb-3">
+                <img src="assets/images/sports-tools copy.jpg" alt="Small Image 1" class="img-fluid w-100 object-fit-cover">
+            </div>
+            <div>
+                <img src="assets/images/sports-tools copy.jpg" alt="Small Image 2" class="img-fluid w-100 object-fit-cover">
+            </div>
+        </div>
+    </div>
+
+    <div class="container mt-3">
+        <h2>About melbourne Sports Complex</h2>
+        <p>The Melbourne Sports Complex is a state-of-the-art venue located in the heart of Melbourne, Australia. Featuring world-class facilities, it offers a wide range of sporting options, from basketball and football to swimming and tennis</p>
+    </div>
+</div>
+
+<div class="container">
+    <h2>Sports</h2>
+    <div class="row g-4">
+        <div class="col-md-2 d-flex flex-column align-items-center">
+            <i class="bi bi-basketball mb-3"></i>
+            <img src="assets/images/basketball.png" alt="Basketball" class="img-fluid rounded-3">
+            <div class="text">Basketball</div>
+        </div>
+
+        <div class="col-md-2 d-flex flex-column align-items-center">
+            <i class="bi bi-football mb-3"></i>
+            <img src="assets/images/football.png" alt="Football" class="img-fluid rounded-3">
+            <div class="text">Football</div>
+        </div>
+
+        <div class="col-md-2 d-flex flex-column align-items-center">
+            <i class="bi bi-swim mb-3"></i>
+            <img src="assets/images/swimming.png" alt="Swimming" class="img-fluid rounded-3">
+            <div class="text">Swimming</div>
+        </div>
+
+        <div class="col-md-2 d-flex flex-column align-items-center">
+            <i class="bi bi-tennis mb-3"></i>
+            <img src="assets/images/tennis.png" alt="Tennis" class="img-fluid rounded-3">
+            <div class="text">Tennis</div>
+        </div>
+
+        <div class="col-md-2 d-flex flex-column align-items-center">
+            <i class="bi bi-volleyball mb-3"></i>
+            <img src="assets/images/volley.png" alt="Volleyball" class="img-fluid rounded-3">
+            <div class="text">Volleyball</div>
+        </div>
+
+        <div class="col-md-2 d-flex flex-column align-items-center">
+            <i class="bi bi-cycling mb-3"></i>
+            <img src="assets/images/cycling.png" alt="Cycling" class="img-fluid rounded-3">
+            <div class="text">Cycling</div>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-3">
+    <div class="row">
+        <h2>Timings</h2>
+        <p class="time">9:00AM-8:00PM</p>
+    </div>
+</div>
+
+<div class="container mt-3 mb-5">
+    <div class="row">
+        <h2>Location</h2>
+
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3147.4330373426747!2d145.26241057530834!3d-37.92031284013396!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad63d121c492559%3A0xd6f8f4785e2ce30!2sMelbourne%20Basketball%20League%20Pty%20Ltd%20-%20MBL!5e0!3m2!1sen!2sin!4v1738409972419!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+       
+    </div>
+</div>
+
+
+    
+ 
+
+
+
+
+    
+
+    
+   
+   
+ <!-- Footer Section -->
+<div class="footer">
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Contact Us Section -->
+            <div class="col-md-3">
+                <h5>Contact Us</h5>
+                <div class="footer-links">
+                    <a href="#">Email Us</a>
+                    <a href="#">FAQ</a>
+                    <a href="#">Support</a>
+                    <a href="#">Terms & Conditions</a>
+                </div>
+            </div>
+
+            <!-- Quick Links Section -->
+            <div class="col-md-3">
+                <h5>Quick Links</h5>
+                <div class="footer-links">
+                    <a href="#">Venues</a>
+                    <a href="#">Sports</a>
+                    <!-- <a href="#">Privacy Policy</a> -->
+                </div>
+            </div>
+
+              <!-- Follow Us Section -->
+              <div class="col-md-3">
+                <h5>Follow Us</h5>
+                <div class="footer-icons">
+                    <a href="#" class="facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="linkedin"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <!-- Newsletter Section -->
+            <div class="col-md-3">
+                <h5>Newsletter</h5>
+                <div class="newsletter">
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Enter your email" aria-label="Email Address">
+                        <button class="btn btn-primary">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr class="border-white">
+        <div class="row">
+            <div class="col-12 text-center">
+                <p>&copy; 2025 Sports Meet. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</div>
+    
+    <!-- Bootstrap JS -->
+
+<!-- Bootstrap JS and FontAwesome for Icons -->
+<!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script> -->
+
+    <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script> -->
+    <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+<!-- serachfunctionality -->
+<script>
+    document.getElementById("searchForm").addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent page reload
+
+        // Get input values
+        const location = document.getElementById("locationInput").value;
+        const sport = document.getElementById("sportInput").value;
+        const date = document.getElementById("dateInput").value;
+        const time = document.getElementById("timeInput").value;
+
+        // Validate inputs
+        if (!location || sport === "Select Sport" || !date || !time) {
+            alert("Please fill all fields correctly.");
+            return;
+        }
+
+        // Display search results (this can be replaced with API calls)
+        document.getElementById("searchResults").innerHTML = `
+            Searching for <b>${sport}</b> in <b>${location}</b> on <b>${date}</b> at <b>${time}</b>...`;
+        
+        console.log("Search Query:", { location, sport, date, time });
+    });
+</script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+      // Modal toggle for Book Now button
+      document.getElementById('bookNowBtn').addEventListener('click', function() {
+          var myModal = new bootstrap.Modal(document.getElementById('bookNowPopup'));
+          myModal.show();
+      });
+
+      // Prevent form submission for testing
+      document.getElementById('bookingForm').addEventListener('submit', function(e) {
+          e.preventDefault();
+          alert("Booking submitted!");
+      });
+  </script>
+  <script>
+    document.querySelectorAll('.rating i').forEach(star => {
+        star.addEventListener('click', function () {
+            let rating = this.getAttribute('data-value');
+            document.getElementById('ratingValue').textContent = `(${rating} / 5)`;
+
+            // Update star colors
+            document.querySelectorAll('.rating i').forEach(s => {
+                s.classList.remove('fas');
+                s.classList.add('far');
+            });
+            for (let i = 0; i < rating; i++) {
+                document.querySelectorAll('.rating i')[i].classList.remove('far');
+                document.querySelectorAll('.rating i')[i].classList.add('fas');
+            }
+        });
+    });
+</script>
+
+<script>
+    function increaseTime() {
+        let timeInput = document.getElementById("timeInput1");
+        let currentValue = parseInt(timeInput.value);
+        if (currentValue < 12) {
+            timeInput.value = currentValue + 1;
+        }
+    }
+
+    function decreaseTime() {
+        let timeInput = document.getElementById("timeInput1");
+        let currentValue = parseInt(timeInput.value);
+        if (currentValue > 1) {
+            timeInput.value = currentValue - 1;
+        }
+    }
+</script>
+
+    
+    <!-- AOS JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+    <script>AOS.init();</script>
+</body>
+</html>

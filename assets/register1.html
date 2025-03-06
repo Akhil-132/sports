@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register Page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            font-family: "Alfa Slab One", cursive;
+<<<<<<< HEAD
+          background: url('http://34.203.202.253/Sports_Web/assets/images/sports-tools-copy.jpg') 
+            no-repeat center center fixed;
+            background-size: cover;
+
+=======
+          background: url('./assets/images/sports-tools\ copy.jpg') no-repeat center center fixed;
+            background-size: cover;
+>>>>>>> 5bc9fc2 (Added appspec.yml and deployment script)
+            position: relative;
+        }
+
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .login-container {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-form {
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            padding: 30px;
+            width: 70%;
+            max-width: 1000px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        .left-section {
+            background-color: #1d3f68;
+            color: #fff;
+            padding: 30px;
+            flex: 1;
+            border-radius: 15px 0 0 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .left-section h1 {
+            font-size: 36px;
+            margin-bottom: 15px;
+            animation: slideInLeft 1s ease-out;
+        }
+
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .social-buttons a {
+            color: white;
+            font-size: 24px;
+            background-color: #333;
+            padding: 10px;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+            text-decoration: none;
+        }
+
+        .social-buttons a:hover {
+            background-color: #00aaff;
+        }
+
+        .right-section {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .right-section h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 20px;
+            animation: slideInRight 1s ease-out;
+        }
+
+        .right-section input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .toggle-label {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        label#userTypeLabel {
+       margin-top: 10px;
+       }
+
+        .form-check-input {
+            width: 40px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .register-btn {
+            width: 100%;
+            padding: 15px;
+            background-color: #1d3f68;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .register-btn:hover {
+            background-color: #00aaff;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(0);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .login-form {
+                flex-direction: column;
+                padding: 20px;
+            }
+
+            .left-section {
+                border-radius: 15px;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .login-form {
+                width: 90%;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="overlay"></div>
+
+    <div class="login-container">
+        <div class="login-form">
+            <div class="left-section">
+                <h1>SportsMeet</h1>
+                <p>Sign up using social media for quick access</p>
+                <div class="social-buttons">
+                    <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="google"><i class="fab fa-google"></i></a>
+                 
+                </div>
+            </div>
+
+            <div class="right-section">
+                <h1>Create Your Account</h1>
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <input type="text" placeholder="First Name" required>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" placeholder="Last Name" required>
+                        </div>
+                    </div>
+                    <input type="text" placeholder="Username" required>
+                    <input type="email" placeholder="Email Address" required>
+                    <input type="tel" placeholder="Mobile Number" required>
+                    <input type="password" placeholder="Password" required>
+                    <input type="password" placeholder="Confirm Password" required>
+
+                   <!-- Toggle Switch for User/Owner -->
+            <div class="toggle-container">
+                <span><strong>Register as:</strong></span>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="userTypeSwitch">
+                    <label class="form-check-label" for="userTypeSwitch" id="userTypeLabel">User</label>
+                </div>
+            </div>
+
+                    <button type="submit" class="register-btn">Register</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('userTypeSwitch').addEventListener('change', function () {
+            document.getElementById('userTypeLabel').textContent = this.checked ? 'Owner' : 'User';
+        });
+    </script>
+
+</body>
+</html>

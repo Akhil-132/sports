@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Meet Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .sidebar {
+            width: 250px;
+            height: 100vh;
+            position: fixed;
+            background-color: #343a40;
+            color: white;
+            padding-top: 20px;
+        }
+        .sidebar a {
+            padding: 15px;
+            display: block;
+            color: white;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            background-color: #495057;
+        }
+        .content {
+            margin-left: 260px;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <h4 class="text-center">Sports Meet</h4>
+        <a href="#">🏠 Dashboard</a>
+        <a href="#">🏆 Events</a>
+        <a href="#">👥 Athletes</a>
+        <a href="#">📊 Scores & Results</a>
+        <a href="#">📈 Reports</a>
+        <a href="#">⚙️ Settings</a>
+    </div>
+    <div class="content">
+        <h2>Dashboard</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card text-center p-3 shadow">
+                    <h4>Total Events</h4>
+                    <h2>10</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center p-3 shadow">
+                    <h4>Total Athletes</h4>
+                    <h2>200</h2>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card text-center p-3 shadow">
+                    <h4>Winners Announced</h4>
+                    <h2>5</h2>
+                </div>
+            </div>
+        </div>
+        <canvas id="myChart" width="400" height="200"></canvas>
+    </div>
+    
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Event 1', 'Event 2', 'Event 3', 'Event 4'],
+                datasets: [{
+                    label: 'Participants',
+                    data: [50, 75, 100, 125],
+                    backgroundColor: ['#007bff', '#28a745', '#ffc107', '#dc3545']
+                }]
+            }
+        });
+    </script>
+</body>
+</html>
